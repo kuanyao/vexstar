@@ -26,34 +26,6 @@ void subtle_rotation_control() {
 	}
 }
 
-void subtle_claw_control() {
-	if (vexRT[Btn7LXmtr2] == 1 || vexRT[Btn7RXmtr2] == 1) {
-		if (vexRT[Btn7LXmtr2] == 1) {
-			sendToClawMotor(-1 * CLAW_MOTOR_SPEED / 2);
-		} else {
-			sendToClawMotor(CLAW_MOTOR_SPEED / 2);
-		}
-		wait1Msec(PROGRESS_INCREMENT_DURATION);
-	}
-}
-
-void subtle_arm_control() {
-	if (vexRT[Btn8UXmtr2] == 1 || vexRT[Btn8DXmtr2] == 1) {
-		if (vexRT[Btn8UXmtr2] == 1) {
-			sendToLiftMotor(LIFT_MOTOR_SPEED / 2);
-		} else {
-			sendToLiftMotor(-1 * LIFT_MOTOR_SPEED / 3);
-		}
-		wait1Msec(PROGRESS_INCREMENT_DURATION);
-	}
-}
-
-void subtle_controls() {
-	subtle_arm_control();
-	subtle_claw_control();
-	subtle_rotation_control();
-	subtle_movement_control();
-}
 
 task chassisControl() {
 	int liftArmControlThreshold = 15;
@@ -61,11 +33,8 @@ task chassisControl() {
 	int wheelControlThreshold = 15;
 
 	while(true){
-		if (trigger_autonomous_mode()) {
-			doAutonumousMovement();
-		}
-
-		subtle_controls();
+		subtle_rotation_control();
+		subtle_movement_control();
 
 		int rotateDirection = 0;
 		if (vexRT[Btn5D] == 1) {
@@ -83,23 +52,6 @@ task chassisControl() {
 			sendToWheelMotor(wheelStraightMovementInput, wheelSideMovementInput, rotateDirection * ROTATE_MOTOR_SPEED);
 		} else {
 			stop_bot_movement();
-		}
-
-		int liftControlInput = vexRT[Ch2Xmtr2];
-		int clawControlInput = vexRT[Ch4Xmtr2];
-		if (abs(liftControlInput) > liftArmControlThreshold) {
-			if (liftControlInput < 0) {
-				liftControlInput /= 2;
-			}
-			sendToLiftMotor(liftControlInput);
-		} else {
-			sendToLiftMotor(0);
-		}
-
-		if (abs(clawControlInput) > clawControlThreshold) {
-			sendToClawMotor(sgn(clawControlInput) * CLAW_MOTOR_SPEED);
-		} else {
-			sendToClawMotor(0);
 		}
 	}
 }
