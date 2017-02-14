@@ -15,6 +15,7 @@ void driveForward(int distance);
 void driveBackward(int distance);
 void driveTowardsRight(int distance);
 void driveTowardsLeft(int distance);
+void stopBotMovement();
 
 void rotateClockwise(int degress);
 void rotateCounterClockwise(int degress);
