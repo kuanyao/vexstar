@@ -1,4 +1,4 @@
-#include "basic_op.h"
+#include "../include/basic_op.h"
 
 void subtle_movement_control() {
 	if (vexRT[Btn8U] == 1 || vexRT[Btn8D] == 1 || vexRT[Btn8L] == 1 || vexRT[Btn8R] == 1) {

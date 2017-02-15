@@ -1,4 +1,4 @@
-#include "basic_op.h"
+#include "../include/basic_op.h"
 
 void subtle_claw_control() {
 	if (vexRT[Btn7LXmtr2] == 1 || vexRT[Btn7RXmtr2] == 1) {

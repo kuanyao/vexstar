@@ -1,6 +1,6 @@
-#include "basic_op.h"
-#include "sensor_op.h"
-#include "advanced_op.h"
+#include "../include/basic_op.h"
+#include "../include/sensor_op.h"
+#include "../include/advanced_op.h"
 
 typedef enum {
 	MovementTask = 0,

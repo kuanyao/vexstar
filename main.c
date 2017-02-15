@@ -57,13 +57,13 @@
 
 #define PROGRESS_INCREMENT_DURATION 80
 
-#include "basic_op.c"
-#include "advanced_op.c"
-#include "sensor_op.c"
-#include "chassis_control.c"
-#include "armclaw_control.c"
-#include "autonomous_1.c"
-#include "autonomous_testing.c"
+#include "roboray/basic_op.c"
+#include "roboray/advanced_op.c"
+#include "roboray/sensor_op.c"
+#include "roboray/chassis_control.c"
+#include "roboray/armclaw_control.c"
+#include "autonomous/autonomous_1.c"
+#include "autonomous/autonomous_testing.c"
 
 //Main competition background code...do not modify!
 #include "Vex_Competition_Includes.c"
