@@ -1,4 +1,5 @@
 #include "basic_op.h"
+#include "sensor_op.h"
 
 typedef enum {
 	MovementTask = 0,
@@ -13,21 +14,9 @@ int _rightWheelEncoderTargetValue;
 int _clawTargetPosition;
 int _armTargetPosition;
 int _orientationTarget;
+int _lastClawPosition;
 
 bool _activeTaskList[10];
-
-int __defaultWheelSpeed = 80;
-int __defaultArmSpeed = 80;
-int __defaultClawSpeed = 80;
-int __defaultRotateSpeed = 60;
-
-// maximum delta considered to be in position, this depends on potentiometer value 
-// from 0 ~ 4096
-int _CLAW_POSITION_THRESHOLD = 50;
-int _ARM_POSITION_THRESHOLD = 50;
-int _ORIENTATION_THRESHOLD = 20;
-int _CLAW_SPEED_THRESHOLD = 0;
-int _CLAW_CLOSED_POSITION = 500;
 
 bool _isAllTaskDone() {
 	for (int i=0;i<10;++i) {
@@ -52,6 +41,7 @@ void _completeClawPositionTask() {
 
 void _completeClawTighteningTask() {
 	stopClawMovement();
+	_lastClawPosition = 0;
 	_activeTaskList[ClawTighteningTask] = false;
 }
 
@@ -70,7 +60,7 @@ void _ensureMovementTaskDone() {
 		int leftWheelEncoder = getLeftWheelEncoderValue();
 		if ((_leftWheelEncoderTargetValue > 0 && leftWheelEncoder > _leftWheelEncoderTargetValue) ||
 			(_leftWheelEncoderTargetValue < 0 && leftWheelEncoder < _leftWheelEncoderTargetValue)) {
-			_completeMovementTask();			
+			_completeMovementTask();
 		}
 	}
 }
@@ -79,8 +69,8 @@ void _ensureClawPositionTaskDone() {
 	if (_activeTaskList[ClawPositionTask]) {
 		int clawPosition = getClawPosition();
 		int delta = _clawTargetPosition - clawPosition;
-		if (abs(delta) > _CLAW_POSITION_THRESHOLD) {
-			int clawSpeed = __defaultClawSpeed;
+		if (abs(delta) > CLAW_POSITIONING_THRESHOLD) {
+			int clawSpeed = CLAW_MOTOR_SPEED;
 			if (abs(delta) < 250) {
 				clawSpeed /= 8;
 			} else if (abs(delta) < 500) {
@@ -95,16 +85,22 @@ void _ensureClawPositionTaskDone() {
 			}
 		} else {
 			_completeClawPositionTask();
-		}	
+		}
 	}
+}
+
+bool _isClawMovementStopped() {
+	int clawPosition = getClawPosition();
+	int oldPosition = _lastClawPosition;
+	_lastClawPosition = clawPosition;
+	return (abs(oldPosition - clawPosition) <= 5);
 }
 
 void _ensureClawTighteningTaskDone() {
 	if (_activeTaskList[ClawTighteningTask]) {
-		int clawSpeed = getClawSpeed();
 		int clawPosition = getClawPosition();
-		if (abs(clawSpeed) <= _CLAW_SPEED_THRESHOLD 
-			|| abs(clawPosition - _CLAW_CLOSED_POSITION) < _CLAW_POSITION_THRESHOLD) {
+		if (_isClawMovementStopped()
+			|| abs(clawPosition - CLAW_CLOSED_POSITION) < CLAW_POSITIONING_THRESHOLD) {
 			_completeClawTighteningTask();
 		}
 	}
@@ -114,9 +110,9 @@ void _ensureArmPositionTaskDone() {
 	if (_activeTaskList[ArmPositionTask]) {
 		int armPosition = getArmPosition();
 		int delta = _armTargetPosition - armPosition;
-		if (abs(delta) > _ARM_POSITION_THRESHOLD) {
-			int armSpeed = delta > 0 ? __defaultArmSpeed : __defaultArmSpeed / 3;
-			if (abs(delta < 500)) {
+		if (abs(delta) > ARM_POSITIONING_THRESHOLD) {
+			int armSpeed = delta > 0 ? LIFT_MOTOR_SPEED : LIFT_MOTOR_SPEED / 3;
+			if (abs(delta) < 500) {
 				armSpeed /= 3;
 			} else if (abs(delta) < 1000) {
 				armSpeed /= 2;
@@ -136,8 +132,8 @@ void _ensureOrientationTaskDone() {
 	if (_activeTaskList[OrientationTask]) {
 		int currentOrientation = getOrientation();
 		int delta = _orientationTarget - currentOrientation;
-		if (abs(delta) > _ORIENTATION_THRESHOLD) {
-			int rotateSpeed = __defaultRotateSpeed;
+		if (abs(delta) > ORIENTATION_THRESHOLD) {
+			int rotateSpeed = ROTATE_MOTOR_SPEED;
 			if (abs(delta) < 300) {
 				rotateSpeed /= 4;
 			} else if (abs(delta) < 600) {
@@ -155,7 +151,7 @@ void _ensureOrientationTaskDone() {
 }
 
 void sync() {
-	while (!isAllTaskDone()) {
+	while (!_isAllTaskDone()) {
 		_ensureMovementTaskDone();
 		_ensureClawPositionTaskDone();
 		_ensureClawTighteningTaskDone();
@@ -163,10 +159,28 @@ void sync() {
 		_ensureOrientationTaskDone();
 
 		wait1Msec(10);
-	}	
+	}
 }
 
 void syncAndWait(int milliseconds) {
 	sync();
 	wait1Msec(milliseconds);
 }
+
+void moveArmToHighFencePushPosition();
+void moveArmToLowFenchPushPosition();
+void dropArmToFloor();
+void raiseArmToCeiling();
+
+void openClawToPushPosition();
+void openClawToWideGrabPosition();
+void openClawToNarrowGrabPosition();
+void closeClawToGrabObects();
+
+void driveForward(int distance);
+void driveBackward(int distance);
+void driveTowardsRight(int distance);
+void driveTowardsLeft(int distance);
+
+void rotateClockwise(int degress);
+void rotateCounterClockwise(int degress);

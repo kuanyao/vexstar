@@ -18,9 +18,9 @@ void subtle_movement_control() {
 void subtle_rotation_control() {
 	if (vexRT[Btn7L] == 1 || vexRT[Btn7R] == 1) {
 		if (vexRT[Btn7L] == 1) {
-			rotate_bot(-1 * ROTATE_MOTOR_SPEED / 2);
+			rotateBot(-1 * ROTATE_MOTOR_SPEED / 2);
 		} else {
-			rotate_bot(ROTATE_MOTOR_SPEED / 2);
+			rotateBot(ROTATE_MOTOR_SPEED / 2);
 		}
 		wait1Msec(PROGRESS_INCREMENT_DURATION);
 	}
@@ -51,7 +51,7 @@ task chassisControl() {
 			|| rotateDirection != 0) {
 			sendToWheelMotor(wheelStraightMovementInput, wheelSideMovementInput, rotateDirection * ROTATE_MOTOR_SPEED);
 		} else {
-			stop_bot_movement();
+			stopBotMovement();
 		}
 	}
 }

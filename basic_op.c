@@ -1,14 +1,30 @@
 #include "basic_op.h"
 
-void driveBot(int vericalSpeed, int horizontalSpeed, int rotateSpeed) {
-	motor[leftFront]  = speedVeritical + speedHorizontal + speedRotation;
-	motor[rightBack]  = -1 * (speedVeritical + speedHorizontal) + speedRotation;
-	motor[rightFront] = speedHorizontal - speedVeritical + speedRotation;
-	motor[leftBack]   = speedVeritical - speedHorizontal + speedRotation;
+void driveBot(int speedVeritical, int speedHorizontal, int speedRotation) {
+	motor[LeftFrontMotor]  = speedVeritical + speedHorizontal + speedRotation;
+	motor[RightBackMotor]  = -1 * (speedVeritical + speedHorizontal) + speedRotation;
+	motor[RightFrontMotor] = speedHorizontal - speedVeritical + speedRotation;
+	motor[LeftBackMotor]   = speedVeritical - speedHorizontal + speedRotation;
+}
+
+void sendToWheelMotor(int speedVeritical, int speedHorizontal, int speedRotation) {
+	driveBot(speedVeritical, speedHorizontal, speedRotation);
 }
 
 void stopBotMovement() {
 	driveBot(0, 0, 0);
+}
+
+void rotateClockwise(int speedValue) {
+	rotateBot(speedValue);
+}
+
+void rotateCounterClockwise(int speedValue) {
+	rotateBot(-1 * speedValue);
+}
+
+void rotateBot(int speed) {
+	driveBot(0, 0, speed);
 }
 
 void openClaw(int speed) {
@@ -31,7 +47,7 @@ void dropArm(int speed) {
 	sendToArmMotor(-1 * speed);
 }
 
-void stopArm() {
+void stopArmMovement() {
 	sendToArmMotor(0);
 }
 
@@ -41,8 +57,12 @@ void sendToClawMotor(int speed) {
 }
 
 void sendToArmMotor(int speed) {
-	motor[liftMotor1] = speed;
-	motor[liftMotor2] = speed;
-	motor[liftMotor3] = speed;
-	motor[liftMotor4] = speed;
+	motor[LiftUpperRight] = speed;
+	motor[LiftUpperLeft] = speed;
+	motor[LiftLowerLeft] = speed;
+	motor[LiftLowerRight] = speed;
+}
+
+int max(int a, int b) {
+	return a > b ? a : b;
 }

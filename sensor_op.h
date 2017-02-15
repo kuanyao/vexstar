@@ -8,4 +8,7 @@ int getClawPosition();
 int getClawMovingSpeed();
 int getOrientation();
 
+void resetLeftWheelEncoder();
+void resetRightWheelEncoder();
+
 #endif
