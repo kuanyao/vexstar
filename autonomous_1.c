@@ -27,7 +27,7 @@ void autonomousProgramOne() {
 	closeClawToGrabObects();
 	syncAndWait(100);
 
-	liftArmToCeiling();
+	raiseArmToCeiling();
 	rotateCounterClockwise(90);
 	syncAndWait(100);
 }

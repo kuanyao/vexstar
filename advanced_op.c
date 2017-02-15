@@ -1,5 +1,6 @@
 #include "basic_op.h"
 #include "sensor_op.h"
+#include "advanced_op.h"
 
 typedef enum {
 	MovementTask = 0,
@@ -139,11 +140,7 @@ void _ensureOrientationTaskDone() {
 			} else if (abs(delta) < 600) {
 				rotateSpeed /= 2;
 			}
-			if (delta > 0) {
-				rotateClockwise(rotateSpeed);
-			} else {
-				rotateCounterClockwise(rotateSpeed);
-			}
+			rotateBot(sgn(delta) * rotateSpeed);
 		} else {
 			_completeOrientationTask();
 		}
@@ -214,7 +211,7 @@ int _convertToEncoderValueFromDistance(float distance) {
 void driveForward(float distance) {
 	resetLeftWheelEncoder();
 	_activeTaskList[MovementTask] = true;
-	driveBot(WHEEL_MOTOR_SPEED, 0, 0);
+	sendToWheelMotor(WHEEL_MOTOR_SPEED, 0, 0);
 
 	int encoderValue = _convertToEncoderValueFromDistance(distance);
 	_leftWheelEncoderTargetValue = encoderValue;
@@ -223,7 +220,7 @@ void driveForward(float distance) {
 void driveBackward(float distance) {
 	resetLeftWheelEncoder();
 	_activeTaskList[MovementTask] = true;
-	driveBot(-1 * WHEEL_MOTOR_SPEED, 0, 0);
+	sendToWheelMotor(-1 * WHEEL_MOTOR_SPEED, 0, 0);
 
 	int encoderValue = _convertToEncoderValueFromDistance(distance);
 	_leftWheelEncoderTargetValue = -1 * encoderValue;
@@ -232,7 +229,7 @@ void driveBackward(float distance) {
 void driveTowardsRight(float distance) {
 	resetLeftWheelEncoder();
 	_activeTaskList[MovementTask] = true;
-	driveBot(0, WHEEL_MOTOR_SPEED, 0);
+	sendToWheelMotor(0, WHEEL_MOTOR_SPEED, 0);
 
 	int encoderValue = _convertToEncoderValueFromDistance(distance);
 	_leftWheelEncoderTargetValue = encoderValue;
@@ -241,7 +238,7 @@ void driveTowardsRight(float distance) {
 void driveTowardsLeft(float distance) {
 	resetLeftWheelEncoder();
 	_activeTaskList[MovementTask] = true;
-	driveBot(0, -1 * WHEEL_MOTOR_SPEED, 0);
+	sendToWheelMotor(0, -1 * WHEEL_MOTOR_SPEED, 0);
 
 	int encoderValue = _convertToEncoderValueFromDistance(distance);
 	_leftWheelEncoderTargetValue = -1 * encoderValue;
@@ -250,11 +247,9 @@ void driveTowardsLeft(float distance) {
 void rotateClockwise(int degree) {
 	SensorValue[Gyro] = 0;
 	_orientationTarget = -10 * degree;
-	rotateBot(ROTATE_MOTOR_SPEED);
 }
 
 void rotateCounterClockwise(int degree) {
 	SensorValue[Gyro] = 0;
 	_orientationTarget = 10 * degree;
-	rotateBot(-1 * ROTATE_MOTOR_SPEED);
 }

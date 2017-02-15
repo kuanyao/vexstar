@@ -1,7 +1,6 @@
 #ifndef __basic_op_h
 #define __basic_op_h
 
-void driveBot(int speedVeritical, int speedHorizontal, int speedRotation);
 void sendToWheelMotor(int speedVeritical, int speedHorizontal, int speedRotation);
 void rotateBot(int speed);
 void stopBotMovement();
