@@ -46,12 +46,14 @@
 #define CLAW_CLOSED_POSITION 500
 #define CLAW_WILD_OPEN_POSITION 1000
 #define CLAW_NARROW_OPEN_POSITION 800
-#define CLAW_PUSH_ON_FENCE_POSITION 1000
+#define CLAW_OPEN_TO_PUSH_POSITION 1000
 
 #define ARM_FLOOR_POSITION 300
 #define ARM_CEILING_POSITION 1000
 #define ARM_HIGH_FENCE_POSITION 800
 #define ARM_LOW_FENCE_POSITION 600
+
+#define DISTANCE_TO_ENCODER_VALUE_BASE_FACTOR 10
 
 #define PROGRESS_INCREMENT_DURATION 80
 
@@ -60,6 +62,8 @@
 #include "sensor_op.c"
 #include "chassis_control.c"
 #include "armclaw_control.c"
+#include "autonomous_1.c"
+#include "autonomous_testing.c"
 
 //Main competition background code...do not modify!
 #include "Vex_Competition_Includes.c"
@@ -102,12 +106,18 @@ void pre_auton()
 
 task autonomous()
 {
-  // ..........................................................................
-  // Insert user code here.
-  // ..........................................................................
+  int jumperSetting = getJumperSetting();
+  if (jumperSetting == 1) {
+    autonomousProgramOne();
+  } else if (jumperSetting == 2) {
+    autonomousProgramTesting();
+  } else if (jumperSetting == 3) {
 
-  // Remove this function call once you have "real" code.
-  AutonomousCodePlaceholderForTesting();
+  } else if (jumperSetting == 4) {
+
+  } else if (jumperSetting == 5) {
+
+  }
 }
 
 /*---------------------------------------------------------------------------*/

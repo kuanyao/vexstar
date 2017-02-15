@@ -7,7 +7,7 @@
 3. move forward
 
 ****************************************/
-void autonomousProgramOne(bool isLeft) {
+void autonomousProgramOne() {
 	driveForward(100);
 	moveArmToHighFencePushPosition();
 	openClawToPushPosition();

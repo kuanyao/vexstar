@@ -11,13 +11,13 @@ void openClawToWideGrabPosition();
 void openClawToNarrowGrabPosition();
 void closeClawToGrabObects();
 
-void driveForward(int distance);
-void driveBackward(int distance);
-void driveTowardsRight(int distance);
-void driveTowardsLeft(int distance);
+void driveForward(float distance);
+void driveBackward(float distance);
+void driveTowardsRight(float distance);
+void driveTowardsLeft(float distance);
 
-void rotateClockwise(int degress);
-void rotateCounterClockwise(int degress);
+void rotateClockwise(int degree);
+void rotateCounterClockwise(int degree);
 
 //wait for wheel, arm, claw command operation to finish
 void sync();

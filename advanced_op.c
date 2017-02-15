@@ -167,20 +167,94 @@ void syncAndWait(int milliseconds) {
 	wait1Msec(milliseconds);
 }
 
-void moveArmToHighFencePushPosition();
-void moveArmToLowFenchPushPosition();
-void dropArmToFloor();
-void raiseArmToCeiling();
+void moveArmToHighFencePushPosition() {
+	_activeTaskList[ArmPositionTask] = true;
+	_armTargetPosition = ARM_HIGH_FENCE_POSITION;
+}
 
-void openClawToPushPosition();
-void openClawToWideGrabPosition();
-void openClawToNarrowGrabPosition();
-void closeClawToGrabObects();
+void moveArmToLowFenchPushPosition() {
+	_activeTaskList[ArmPositionTask] = true;
+	_armTargetPosition = ARM_LOW_FENCE_POSITION;
+}
 
-void driveForward(int distance);
-void driveBackward(int distance);
-void driveTowardsRight(int distance);
-void driveTowardsLeft(int distance);
+void dropArmToFloor() {
+	_activeTaskList[ArmPositionTask] = true;
+	_armTargetPosition = ARM_FLOOR_POSITION;
+}
 
-void rotateClockwise(int degress);
-void rotateCounterClockwise(int degress);
+void raiseArmToCeiling() {
+	_activeTaskList[ArmPositionTask] = true;
+	_armTargetPosition = ARM_CEILING_POSITION;
+}
+
+void openClawToPushPosition() {
+	_activeTaskList[ClawPositionTask] = true;
+	_clawTargetPosition = CLAW_OPEN_TO_PUSH_POSITION;
+}
+
+void openClawToWideGrabPosition() {
+	_activeTaskList[ClawPositionTask] = true;
+	_clawTargetPosition = CLAW_WILD_OPEN_POSITION;
+}
+
+void openClawToNarrowGrabPosition() {
+	_activeTaskList[ClawPositionTask] = true;
+	_clawTargetPosition = CLAW_NARROW_OPEN_POSITION;
+}
+
+void closeClawToGrabObects() {
+	_activeTaskList[ClawTighteningTask] = true;
+	closeClaw(CLAW_MOTOR_SPEED);
+}
+
+int _convertToEncoderValueFromDistance(float distance) {
+	return distance * DISTANCE_TO_ENCODER_VALUE_BASE_FACTOR;
+}
+
+void driveForward(float distance) {
+	resetLeftWheelEncoder();
+	_activeTaskList[MovementTask] = true;
+	driveBot(WHEEL_MOTOR_SPEED, 0, 0);
+
+	int encoderValue = _convertToEncoderValueFromDistance(distance);
+	_leftWheelEncoderTargetValue = encoderValue;
+}
+
+void driveBackward(float distance) {
+	resetLeftWheelEncoder();
+	_activeTaskList[MovementTask] = true;
+	driveBot(-1 * WHEEL_MOTOR_SPEED, 0, 0);
+
+	int encoderValue = _convertToEncoderValueFromDistance(distance);
+	_leftWheelEncoderTargetValue = -1 * encoderValue;
+}
+
+void driveTowardsRight(float distance) {
+	resetLeftWheelEncoder();
+	_activeTaskList[MovementTask] = true;
+	driveBot(0, WHEEL_MOTOR_SPEED, 0);
+
+	int encoderValue = _convertToEncoderValueFromDistance(distance);
+	_leftWheelEncoderTargetValue = encoderValue;
+}
+
+void driveTowardsLeft(float distance) {
+	resetLeftWheelEncoder();
+	_activeTaskList[MovementTask] = true;
+	driveBot(0, -1 * WHEEL_MOTOR_SPEED, 0);
+
+	int encoderValue = _convertToEncoderValueFromDistance(distance);
+	_leftWheelEncoderTargetValue = -1 * encoderValue;
+}
+
+void rotateClockwise(int degree) {
+	SensorValue[Gyro] = 0;
+	_orientationTarget = -10 * degree;
+	rotateBot(ROTATE_MOTOR_SPEED);
+}
+
+void rotateCounterClockwise(int degree) {
+	SensorValue[Gyro] = 0;
+	_orientationTarget = 10 * degree;
+	rotateBot(-1 * ROTATE_MOTOR_SPEED);
+}

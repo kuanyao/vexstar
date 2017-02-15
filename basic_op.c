@@ -15,14 +15,6 @@ void stopBotMovement() {
 	driveBot(0, 0, 0);
 }
 
-void rotateClockwise(int speedValue) {
-	rotateBot(speedValue);
-}
-
-void rotateCounterClockwise(int speedValue) {
-	rotateBot(-1 * speedValue);
-}
-
 void rotateBot(int speed) {
 	driveBot(0, 0, speed);
 }
