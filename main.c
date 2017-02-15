@@ -9,7 +9,7 @@
 #pragma config(Sensor, dgtl7,  LeftWheelEncoder, sensorQuadEncoder)
 #pragma config(Sensor, dgtl9,  RightWheelEncoder, sensorQuadEncoder)
 #pragma config(Sensor, dgtl11, ClawEncoder,    sensorQuadEncoder)
-#pragma config(Motor,  port1,           ClawLeft,      tmotorVex393_HBridge, openLoop)
+#pragma config(Motor,  port1,           ClawLeft,      tmotorVex393_HBridge, openLoop, reversed)
 #pragma config(Motor,  port2,           LeftFrontMotor, tmotorVex393HighSpeed_MC29, openLoop, driveLeft)
 #pragma config(Motor,  port3,           RightFrontMotor, tmotorVex393HighSpeed_MC29, openLoop, driveRight)
 #pragma config(Motor,  port4,           LeftBackMotor, tmotorVex393HighSpeed_MC29, openLoop, encoderPort, dgtl7)
@@ -57,11 +57,11 @@
 
 #define PROGRESS_INCREMENT_DURATION 80
 
-#include "roboray/basic_op.c"
-#include "roboray/advanced_op.c"
-#include "roboray/sensor_op.c"
-#include "roboray/chassis_control.c"
-#include "roboray/armclaw_control.c"
+#include "lib/basic_op.c"
+#include "lib/advanced_op.c"
+#include "lib/sensor_op.c"
+#include "lib/chassis_control.c"
+#include "lib/armclaw_control.c"
 #include "autonomous/autonomous_1.c"
 #include "autonomous/autonomous_testing.c"
 
@@ -97,6 +97,8 @@ void pre_auton()
 
 task autonomous()
 {
+  startTask(MotorAccelerateSlewRateTask);
+
   int jumperSetting = getJumperSetting();
   if (jumperSetting == 1) {
     autonomousProgramOne();
@@ -121,6 +123,7 @@ task autonomous()
 
 task usercontrol()
 {
+  startTask(MotorAccelerateSlewRateTask);
   startTask(chassisControl);
   startTask(armClawControl);
 
