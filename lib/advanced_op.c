@@ -10,7 +10,6 @@ typedef enum {
 	OrientationTask = 4
 } TaskNames;
 
-int _leftWheelEncoderTargetValue;
 int _rightWheelEncoderTargetValue;
 int _clawTargetPosition;
 int _armTargetPosition;
@@ -31,8 +30,8 @@ bool _isAllTaskDone() {
 void _completeMovementTask() {
 	stopBotMovement();
 	_activeTaskList[MovementTask] = false;
-	_leftWheelEncoderTargetValue = 0;
-	resetLeftWheelEncoder();
+	_rightWheelEncoderTargetValue = 0;
+	resetRightWheelEncoder();
 }
 
 void _completeClawPositionTask() {
@@ -58,9 +57,9 @@ void _completeOrientationTask() {
 
 void _ensureMovementTaskDone() {
 	if (_activeTaskList[MovementTask]) {
-		int leftWheelEncoder = getLeftWheelEncoderValue();
-		if ((_leftWheelEncoderTargetValue > 0 && leftWheelEncoder > _leftWheelEncoderTargetValue) ||
-			(_leftWheelEncoderTargetValue < 0 && leftWheelEncoder < _leftWheelEncoderTargetValue)) {
+		int leftWheelEncoder = getRightWheelEncoderValue();
+		if ((_rightWheelEncoderTargetValue > 0 && leftWheelEncoder > _rightWheelEncoderTargetValue) ||
+			(_rightWheelEncoderTargetValue < 0 && leftWheelEncoder < _rightWheelEncoderTargetValue)) {
 			_completeMovementTask();
 		}
 	}
@@ -209,39 +208,39 @@ int _convertToEncoderValueFromDistance(float distance) {
 }
 
 void driveForward(float distance) {
-	resetLeftWheelEncoder();
+	resetRightWheelEncoder();
 	_activeTaskList[MovementTask] = true;
 	sendToWheelMotor(WHEEL_MOTOR_SPEED, 0, 0);
 
 	int encoderValue = _convertToEncoderValueFromDistance(distance);
-	_leftWheelEncoderTargetValue = encoderValue;
+	_rightWheelEncoderTargetValue = encoderValue;
 }
 
 void driveBackward(float distance) {
-	resetLeftWheelEncoder();
+	resetRightWheelEncoder();
 	_activeTaskList[MovementTask] = true;
 	sendToWheelMotor(-1 * WHEEL_MOTOR_SPEED, 0, 0);
 
 	int encoderValue = _convertToEncoderValueFromDistance(distance);
-	_leftWheelEncoderTargetValue = -1 * encoderValue;
+	_rightWheelEncoderTargetValue = -1 * encoderValue;
 }
 
 void driveTowardsRight(float distance) {
-	resetLeftWheelEncoder();
+	resetRightWheelEncoder();
 	_activeTaskList[MovementTask] = true;
 	sendToWheelMotor(0, WHEEL_MOTOR_SPEED, 0);
 
 	int encoderValue = _convertToEncoderValueFromDistance(distance);
-	_leftWheelEncoderTargetValue = encoderValue;
+	_rightWheelEncoderTargetValue = encoderValue;
 }
 
 void driveTowardsLeft(float distance) {
-	resetLeftWheelEncoder();
+	resetRightWheelEncoder();
 	_activeTaskList[MovementTask] = true;
 	sendToWheelMotor(0, -1 * WHEEL_MOTOR_SPEED, 0);
 
 	int encoderValue = _convertToEncoderValueFromDistance(distance);
-	_leftWheelEncoderTargetValue = -1 * encoderValue;
+	_rightWheelEncoderTargetValue = -1 * encoderValue;
 }
 
 void rotateClockwise(int degree) {

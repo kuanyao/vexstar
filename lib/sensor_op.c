@@ -1,7 +1,3 @@
-int getLeftWheelEncoderValue(){
-	return SensorValue[LeftWheelEncoder];
-}
-
 int getRightWheelEncoderValue() {
 	return SensorValue[RightWheelEncoder];
 }
@@ -16,10 +12,6 @@ int getClawPosition() {
 
 int getOrientation() {
 	return SensorValue[Gyro];
-}
-
-void resetLeftWheelEncoder(){
-	SensorValue[LeftWheelEncoder] = 0;
 }
 
 void resetRightWheelEncoder() {
@@ -45,13 +37,11 @@ void printSensorValuesToDebugWindow() {
 	int gyroPosition = getOrientation();
 	int armPosition = getArmPosition();
 	int clawPosition = getClawPosition();
-	int leftEncoder = getLeftWheelEncoderValue();
 	int rightEncoder = getRightWheelEncoderValue();
 
 	writeDebugStreamLine("Gyro Sensor => %d", gyroPosition);
 	writeDebugStreamLine("Arm Sensor => %d", armPosition);
 	writeDebugStreamLine("Claw Sensor => %d", clawPosition);
-	writeDebugStreamLine("Left Encoder => %d", leftEncoder);
 	writeDebugStreamLine("Right Encoder => %d", rightEncoder);
 	writeDebugStreamLine("~~~~~~~~~~~~~~~~~~~~");
 	writeDebugStreamLine("");
