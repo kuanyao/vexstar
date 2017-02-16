@@ -109,7 +109,9 @@ task autonomous()
 
   } else if (jumperSetting == 5) {
 
-  }
+  } else if (jumperSetting == 6) {
+
+	}
 }
 
 /*---------------------------------------------------------------------------*/

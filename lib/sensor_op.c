@@ -19,7 +19,8 @@ void resetRightWheelEncoder() {
 }
 
 int getJumperSetting() {
-	int jumperSetting = SensorValue[Jumper1] + SensorValue[Jumper2] + SensorValue[Jumper3] + SensorValue[Jumper4] + SensorValue[Jumper5];
+	int jumperSetting
+		= SensorValue[Jumper1] + SensorValue[Jumper2] + SensorValue[Jumper3] + SensorValue[Jumper4] + SensorValue[Jumper5] + SensorValue[Jumper6];
 	return jumperSetting;
 }
 
