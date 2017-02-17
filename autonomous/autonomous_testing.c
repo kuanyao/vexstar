@@ -9,8 +9,8 @@
 ****************************************/
 void autonomousProgramTesting() {
 
-	// driveForward(100);
-	// syncAndWait(1000);
+	driveForward(5);
+	syncAndWait(1000);
 
 	// driveBackward(100);
 	// syncAndWait(1000);
@@ -48,8 +48,8 @@ void autonomousProgramTesting() {
 	// openClawToNarrowGrabPosition();
 	// syncAndWait(1000);
 
-	closeClawToGrabObects();
-	syncAndWait(1000);
+	// closeClawToGrabObects();
+	// syncAndWait(1000);
 
 	// rotateClockwise(90);
 	// syncAndWait(1000);

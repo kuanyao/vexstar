@@ -12,32 +12,36 @@ void autonomousProgramOne() {
 	sync();
 
 	openClawoToWideGrabPosition();
-	driveForward(50);
+	driveForward(45);
 	syncAndWait(200);
 
 	closeClawToGrabObects();
-	sync();
+	syncAndWait(300);
 
 	raiseArmToCeiling();
-	driveForward(40);
-	syncAndWait(200);
+	//driveForward(40);
+	//syncAndWait(200);
 
 	rotateCounterClockwise(45);
 	syncAndWait(200);
 
-	driveForward(20);
+	driveForward(30);
 	syncAndWait(200);
 
 	openClawToWideGrabPosition();
-	syncAndWait(100);
+	syncAndWait(1000);
 	//wait1Msec(500);
-	driveBackward(10);
+	driveBackward(15);
 	syncAndWait(100);
 
 	moveArmToLowFenchPushPosition();
-	sync();
-	moveArmToLowFenchPushPosition();
+	//sync();
+	//moveArmToLowFenchPushPosition();
 	openClawToPushPosition();
+	driveTowardsRight(10);
+
+	syncAndWait(200);
+
 	driveForward(15);
-	sync();
+	syncAndWait(200);
 }

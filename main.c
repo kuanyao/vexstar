@@ -131,7 +131,23 @@ void runAutonomous(bool withSlewControl) {
 }
 
 task triggerAutonomous() {
-  runAutonomous(false);
+  int jumperSetting = getJumperSetting();
+  if (jumperSetting == 1) {
+    autonomousProgramOne();
+  } else if (jumperSetting == 2) {
+    autonomousProgramTwo();
+  } else if (jumperSetting == 3) {
+    autonomousProgramTesting();
+
+  } else if (jumperSetting == 4) {
+
+  } else if (jumperSetting == 5) {
+
+  } else if (jumperSetting == 6) {
+
+  }
+
+  signalAutonCompleted();
 }
 
 task autonomous()
@@ -155,7 +171,7 @@ task usercontrol()
 
   while (true)
   {
-    checkAutonomous();
+    //checkAutonomous();
   	printSensorValuesToDebugWindow();
     wait(1);
   }
