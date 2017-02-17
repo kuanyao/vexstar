@@ -209,6 +209,9 @@ void closeClawToGrabObects() {
 	_lastClawPosition = 0;
 	closeClaw(CLAW_MOTOR_SPEED);
 	writeDebugStreamLine("closing claw at speed %d", CLAW_MOTOR_SPEED);
+	// closeClaw(80);
+	// wait1Msec(1300);
+	// stopClawMovement();
 }
 
 int _convertToEncoderValueFromDistance(float distance) {

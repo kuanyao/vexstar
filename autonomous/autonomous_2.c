@@ -12,19 +12,21 @@ void autonomousProgramTwo() {
 	openClawToNarrowGrabPosition();
 	//syncAndWait(100);
 	wait1Msec(1200);
-	rotateClockwise(90);
+	rotateCounterClockwise(90);
 	syncAndWait(100);
 
 	dropArmToFloor();
-	driveForward(30);
+	driveForward(40);
 	syncAndWait(100);
 
 	closeClawToGrabObects();
 	syncAndWait(100);
 
 	raiseArmToCeiling();
-	rotateCounterClockwise(90);
+	rotateClockwise(90);
 	syncAndWait(200);
+
+	liftArm(30);
 
 	driveForward(100);
 	syncAndWait(100);
@@ -37,11 +39,12 @@ void autonomousProgramTwo() {
 	rotateClockwise(10);
 	syncAndWait(100);
 
-	driveTowardsRight(20);
+	driveTowardsRight(40);
 	openClawToPushPosition();
 	//raiseArmToLowFencePosition();
-	moveArmToLowFenchPushPosition();
+	//moveArmToLowFenchPushPosition();
 	syncAndWait(100);
+	dropArm(20);
 
 	driveForward(20);
 	syncAndWait(200);

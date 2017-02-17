@@ -9,10 +9,10 @@
 #pragma config(Sensor, dgtl6,  Jumper6,        sensorTouch)
 #pragma config(Sensor, dgtl11, RightWheelEncoder, sensorQuadEncoder)
 #pragma config(Motor,  port1,           ClawLeft,      tmotorVex393_HBridge, openLoop, reversed)
-#pragma config(Motor,  port2,           LeftBackMotor, tmotorVex393HighSpeed_MC29, openLoop, driveLeft)
-#pragma config(Motor,  port3,           RightBackMotor, tmotorVex393HighSpeed_MC29, openLoop, driveRight)
-#pragma config(Motor,  port4,           LeftFrontMotor, tmotorVex393HighSpeed_MC29, openLoop)
-#pragma config(Motor,  port5,           RightFrontMotor, tmotorVex393HighSpeed_MC29, openLoop)
+#pragma config(Motor,  port2,           LeftBackMotor, tmotorVex393_MC29, openLoop)
+#pragma config(Motor,  port3,           RightBackMotor, tmotorVex393_MC29, openLoop)
+#pragma config(Motor,  port4,           LeftFrontMotor, tmotorVex393_MC29, openLoop)
+#pragma config(Motor,  port5,           RightFrontMotor, tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port6,           LiftUpperLeft, tmotorVex393_MC29, openLoop, reversed)
 #pragma config(Motor,  port7,           LiftLowerLeft, tmotorVex393_MC29, openLoop, reversed)
 #pragma config(Motor,  port8,           LiftUpperRight, tmotorVex393_MC29, openLoop)
@@ -40,7 +40,7 @@
 #define CLAW_MOTOR_SPEED 85
 #define ROTATE_MOTOR_SPEED 40
 #define ROTATE_MOTOR_SPEED_HALF 20
-#define LIFT_MOTOR_SPEED 80
+#define LIFT_MOTOR_SPEED 120
 #define LIFT_MOTOR_SPEED_HALF 40
 #define LIFT_MOTOR_SPEED_THIRD 30
 #define WHEEL_MOTOR_SPEED 60

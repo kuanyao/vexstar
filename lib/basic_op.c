@@ -34,8 +34,8 @@ void sendToWheelMotor(int speedVeritical, int speedHorizontal, int speedRotation
 	// motor[LeftBackMotor]   = speedVeritical - speedHorizontal + speedRotation;
 	motorReq[LeftFrontMotor]  = speedVeritical + speedHorizontal + speedRotation;
 	motorReq[RightBackMotor]  = -1 * (speedVeritical + speedHorizontal) + speedRotation;
-	motorReq[RightFrontMotor] = round((speedHorizontal - speedVeritical + speedRotation) * 0.9);
-	//motorReq[RightFrontMotor] = speedHorizontal - speedVeritical + speedRotation;
+	//motorReq[RightFrontMotor] = round((speedHorizontal - speedVeritical + speedRotation) * 0.9);
+	motorReq[RightFrontMotor] = speedHorizontal - speedVeritical + speedRotation;
 	motorReq[LeftBackMotor]   = speedVeritical - speedHorizontal + speedRotation;
 }
 
