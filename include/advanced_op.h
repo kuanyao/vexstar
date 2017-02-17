@@ -5,6 +5,7 @@ void moveArmToHighFencePushPosition();
 void moveArmToLowFenchPushPosition();
 void dropArmToFloor();
 void raiseArmToCeiling();
+void raiseArmBelowFence();
 
 void openClawToPushPosition();
 void openClawToWideGrabPosition();

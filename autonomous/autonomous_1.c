@@ -8,26 +8,36 @@
 
 ****************************************/
 void autonomousProgramOne() {
-	driveForward(100);
-	moveArmToHighFencePushPosition();
-	openClawToPushPosition();
-	syncAndWait(500);
+	rotateClockwise(50);
+	sync();
 
-	driveBackward(20);
-	openClawToWideGrabPosition();
-	syncAndWait(500);
-
-	rotateClockwise(135);
-	dropArmToFloor();
-	syncAndWait(500);
-
+	openClawoToWideGrabPosition();
 	driveForward(50);
-	syncAndWait(100);
+	syncAndWait(200);
 
 	closeClawToGrabObects();
-	syncAndWait(100);
+	sync();
 
 	raiseArmToCeiling();
-	rotateCounterClockwise(90);
+	driveForward(40);
+	syncAndWait(200);
+
+	rotateCounterClockwise(45);
+	syncAndWait(200);
+
+	driveForward(20);
+	syncAndWait(200);
+
+	openClawToWideGrabPosition();
 	syncAndWait(100);
+	//wait1Msec(500);
+	driveBackward(10);
+	syncAndWait(100);
+
+	moveArmToLowFenchPushPosition();
+	sync();
+	moveArmToLowFenchPushPosition();
+	openClawToPushPosition();
+	driveForward(15);
+	sync();
 }

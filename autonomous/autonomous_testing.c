@@ -9,17 +9,17 @@
 ****************************************/
 void autonomousProgramTesting() {
 
-	driveForward(100);
-	sync();
+	// driveForward(100);
+	// syncAndWait(1000);
 
 	// driveBackward(100);
-	// sync();
+	// syncAndWait(1000);
 
 	// driveTowardsRight(100);
-	// sync();
+	// syncAndWait(1000);
 
 	// driveTowardsLeft(100);
-	// sync();
+	// syncAndWait(1000);
 
 	// rotateClockwise(90);
 	// sync();
@@ -28,26 +28,44 @@ void autonomousProgramTesting() {
 	// sync();
 
 	// moveArmToHighFencePushPosition();
-	// sync();
-
-	// moveArmToLowFenchPushPosition();
-	// sync();
+	// syncAndWait(1000);
 
 	// dropArmToFloor();
-	// sync();
+	// syncAndWait(1000);
+
+	// moveArmToLowFenchPushPosition();
+	// syncAndWait(1000);
 
 	// raiseArmToCeiling();
-	// sync();
+	// syncAndWait(1000);
 
 	// openClawToPushPosition();
-	// sync();
+	// syncAndWait(1000);
 
 	// openClawToWideGrabPosition();
-	// sync();
+	// syncAndWait(1000);
 
 	// openClawToNarrowGrabPosition();
-	// sync();
+	// syncAndWait(1000);
 
-	// closeClawToGrabObects();
-	// sync();
+	closeClawToGrabObects();
+	syncAndWait(1000);
+
+	// rotateClockwise(90);
+	// syncAndWait(1000);
+
+	// rotateCounterClockwise(90);
+	// syncAndWait(1000);
+
+	// rotateClockwise(45);
+	// syncAndWait(1000);
+
+	// rotateCounterClockwise(45);
+	// syncAndWait(1000);
+
+	// rotateClockwise(180);
+	// syncAndWait(1000);
+
+	// rotateCounterClockwise(180);
+	// syncAndWait(1000);
 }

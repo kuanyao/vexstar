@@ -71,11 +71,9 @@ void _ensureClawPositionTaskDone() {
 		int delta = _clawTargetPosition - clawPosition;
 		if (abs(delta) > CLAW_POSITIONING_THRESHOLD) {
 			int clawSpeed = CLAW_MOTOR_SPEED;
-			if (abs(delta) < 250) {
-				clawSpeed /= 8;
-			} else if (abs(delta) < 500) {
+			if (abs(delta) < 50) {
 				clawSpeed /= 4;
-			} else if (abs(delta) < 1000) {
+			} else if (abs(delta) < 100) {
 				clawSpeed /= 2;
 			}
 			if (delta > 0) {
@@ -93,7 +91,10 @@ bool _isClawMovementStopped() {
 	int clawPosition = getClawPosition();
 	int oldPosition = _lastClawPosition;
 	_lastClawPosition = clawPosition;
-	return (abs(oldPosition - clawPosition) <= 5);
+	bool isMoving = (abs(oldPosition - clawPosition) <= CLAW_STOPPING_THRESHOLD);
+	wait1Msec(200);
+	writeDebugStreamLine("clawPosition: %d, last position %d, isMoving %d", clawPosition, oldPosition, isMoving);
+	return isMoving;
 }
 
 void _ensureClawTighteningTaskDone() {
@@ -101,6 +102,7 @@ void _ensureClawTighteningTaskDone() {
 		int clawPosition = getClawPosition();
 		if (_isClawMovementStopped()
 			|| abs(clawPosition - CLAW_CLOSED_POSITION) < CLAW_POSITIONING_THRESHOLD) {
+			wait1Msec(200);
 			_completeClawTighteningTask();
 		}
 	}
@@ -109,14 +111,13 @@ void _ensureClawTighteningTaskDone() {
 void _ensureArmPositionTaskDone() {
 	if (_activeTaskList[ArmPositionTask]) {
 		int armPosition = getArmPosition();
-		int delta = _armTargetPosition - armPosition;
+		int delta = armPosition - _armTargetPosition;
 		if (abs(delta) > ARM_POSITIONING_THRESHOLD) {
-			int armSpeed = delta > 0 ? LIFT_MOTOR_SPEED : LIFT_MOTOR_SPEED / 3;
-			if (abs(delta) < 500) {
-				armSpeed /= 3;
-			} else if (abs(delta) < 1000) {
-				armSpeed /= 2;
-			}
+			//delta > 0 means we need lift, otherwise drop
+			int armSpeed = delta > 0 ? LIFT_MOTOR_SPEED : LIFT_MOTOR_SPEED * 0.25;
+			// if (abs(delta) < 300) {
+			// 	armSpeed *= 0.8;
+			// } 
 			if (delta > 0) {
 				liftArm(armSpeed);
 			} else {
@@ -131,16 +132,16 @@ void _ensureArmPositionTaskDone() {
 void _ensureOrientationTaskDone() {
 	if (_activeTaskList[OrientationTask]) {
 		int currentOrientation = getOrientation();
-		int delta = _orientationTarget - currentOrientation;
+		int delta = currentOrientation - _orientationTarget;
 		if (abs(delta) > ORIENTATION_THRESHOLD) {
 			int rotateSpeed = ROTATE_MOTOR_SPEED;
-			if (abs(delta) < 300) {
-				rotateSpeed /= 4;
-			} else if (abs(delta) < 600) {
-				rotateSpeed /= 2;
+			if (abs(delta) <= 250) {
+				rotateSpeed = ROTATE_MOTOR_SPEED_HALF;
 			}
+			//writeDebugStreamLine("delta = %d ,set rotation speed to %d", delta, rotateSpeed);
 			rotateBot(sgn(delta) * rotateSpeed);
 		} else {
+			writeDebugStreamLine("complete rotation task, current position = %d, delta = %d", currentOrientation, delta);
 			_completeOrientationTask();
 		}
 	}
@@ -183,6 +184,11 @@ void raiseArmToCeiling() {
 	_armTargetPosition = ARM_CEILING_POSITION;
 }
 
+void raiseArmBelowFence() {
+	_activeTaskList[ArmPositionTask] = true;
+	_armTargetPosition = ARM_BELOW_FENCE_POSITION;
+}
+
 void openClawToPushPosition() {
 	_activeTaskList[ClawPositionTask] = true;
 	_clawTargetPosition = CLAW_OPEN_TO_PUSH_POSITION;
@@ -200,7 +206,9 @@ void openClawToNarrowGrabPosition() {
 
 void closeClawToGrabObects() {
 	_activeTaskList[ClawTighteningTask] = true;
+	_lastClawPosition = 0;
 	closeClaw(CLAW_MOTOR_SPEED);
+	writeDebugStreamLine("closing claw at speed %d", CLAW_MOTOR_SPEED);
 }
 
 int _convertToEncoderValueFromDistance(float distance) {
@@ -213,7 +221,7 @@ void driveForward(float distance) {
 	sendToWheelMotor(WHEEL_MOTOR_SPEED, 0, 0);
 
 	int encoderValue = _convertToEncoderValueFromDistance(distance);
-	_rightWheelEncoderTargetValue = encoderValue;
+	_rightWheelEncoderTargetValue = -1 * encoderValue;
 }
 
 void driveBackward(float distance) {
@@ -222,7 +230,7 @@ void driveBackward(float distance) {
 	sendToWheelMotor(-1 * WHEEL_MOTOR_SPEED, 0, 0);
 
 	int encoderValue = _convertToEncoderValueFromDistance(distance);
-	_rightWheelEncoderTargetValue = -1 * encoderValue;
+	_rightWheelEncoderTargetValue = encoderValue;
 }
 
 void driveTowardsRight(float distance) {
@@ -231,7 +239,7 @@ void driveTowardsRight(float distance) {
 	sendToWheelMotor(0, WHEEL_MOTOR_SPEED, 0);
 
 	int encoderValue = _convertToEncoderValueFromDistance(distance);
-	_rightWheelEncoderTargetValue = encoderValue;
+	_rightWheelEncoderTargetValue = -1 * encoderValue;
 }
 
 void driveTowardsLeft(float distance) {
@@ -240,15 +248,19 @@ void driveTowardsLeft(float distance) {
 	sendToWheelMotor(0, -1 * WHEEL_MOTOR_SPEED, 0);
 
 	int encoderValue = _convertToEncoderValueFromDistance(distance);
-	_rightWheelEncoderTargetValue = -1 * encoderValue;
+	_rightWheelEncoderTargetValue = encoderValue;
 }
 
 void rotateClockwise(int degree) {
-	SensorValue[Gyro] = 0;
-	_orientationTarget = -10 * degree;
+	degree -= 5;
+	int currentSetting = SensorValue[Gyro];
+	_orientationTarget = currentSetting - 10 * degree;
+	_activeTaskList[OrientationTask] = true;
 }
 
 void rotateCounterClockwise(int degree) {
-	SensorValue[Gyro] = 0;
-	_orientationTarget = 10 * degree;
+	degree -= 5;
+	int currentSetting = SensorValue[Gyro];
+	_orientationTarget = 10 * degree + currentSetting;
+	_activeTaskList[OrientationTask] = true;
 }
