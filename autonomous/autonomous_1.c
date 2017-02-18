@@ -48,9 +48,9 @@ void autonomousProgramOne() {
 	//sync();
 	//moveArmToLowFenchPushPosition();
 	openClawToPushPosition();
-	dropArm(13);
-	wait1Msec(120);
-	stopArmMovement();  
+	// dropArm(13);
+	// wait1Msec(120);
+	// stopArmMovement();  
 	syncAndWait(100);
 	//driveTowardsLeft(25);
 
