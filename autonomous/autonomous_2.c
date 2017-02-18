@@ -26,12 +26,12 @@ void autonomousProgramTwo() {
 
 	//raiseArmToCeiling();
 	moveArmToHighFencePushPosition();
-	rotateClockwise(110);
+	rotateClockwise(105);
 	syncAndWait(200);
 
 	//liftArm(20);
 
-	driveForward(107);
+	driveForward(105);
 	syncAndWait(100);
 
 	openClawToNarrowGrabPosition();
@@ -51,4 +51,13 @@ void autonomousProgramTwo() {
 
 	driveForward(20);
 	syncAndWait(200);
+
+	driveBackward(20);
+	syncAndWait(1000);
+	// dropArmToFloor();
+	// openClawToNarrowGrabPosition();
+	// syncAndWait(100);
+
+	// rotateClockwise(90);
+	// syncAndWait(100);
 }

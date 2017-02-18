@@ -47,7 +47,7 @@
 
 #define CLAW_POSITIONING_THRESHOLD 20
 #define ARM_POSITIONING_THRESHOLD 20
-#define CLAW_STOPPING_THRESHOLD 5
+#define CLAW_STOPPING_THRESHOLD 10
 #define ORIENTATION_THRESHOLD 10
 
 #define CLAW_CLOSED_POSITION 1100
@@ -73,6 +73,7 @@
 #include "lib/armclaw_control.c"
 #include "autonomous/autonomous_1.c"
 #include "autonomous/autonomous_2.c"
+#include "autonomous/autonomous_3.c"
 #include "autonomous/autonomous_testing.c"
 
 //Main competition background code...do not modify!
@@ -118,7 +119,7 @@ void runAutonomous(bool withSlewControl) {
   } else if (jumperSetting == 2) {
     autonomousProgramTwo();
   } else if (jumperSetting == 3) {
-
+    autonomousProgramThree();
   } else if (jumperSetting == 4) {
 
   } else if (jumperSetting == 5) {

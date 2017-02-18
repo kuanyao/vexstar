@@ -56,4 +56,13 @@ void autonomousProgramOne() {
 
 	driveForward(25);
 	syncAndWait(200);
+
+	driveBackward(50);
+	wait1Msec(1000);
+	dropArmToFloor();
+	openClawToNarrowGrabPosition();
+	syncAndWait(100);
+
+	rotateClockwise(90);
+	syncAndWait(100);
 }
