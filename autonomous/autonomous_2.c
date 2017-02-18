@@ -9,42 +9,44 @@
 ****************************************/
 void autonomousProgramTwo() {
 	raiseArmBelowFence();
-	openClawToNarrowGrabPosition();
+	openClawToWideGrabPosition();
 	//syncAndWait(100);
 	wait1Msec(1200);
 	rotateCounterClockwise(90);
 	syncAndWait(100);
 
 	dropArmToFloor();
-	driveForward(40);
+	wait1Msec(600);
+	driveForward(30);
 	syncAndWait(100);
 
 	closeClawToGrabObects();
 	syncAndWait(100);
 
-	raiseArmToCeiling();
-	rotateClockwise(90);
+	//raiseArmToCeiling();
+	moveArmToHighFencePushPosition();
+	rotateClockwise(110);
 	syncAndWait(200);
 
-	liftArm(30);
+	//liftArm(20);
 
-	driveForward(100);
+	driveForward(107);
 	syncAndWait(100);
 
 	openClawToNarrowGrabPosition();
 	wait1Msec(1000);
-	driveBackward(20);
+	driveBackward(15);
 	syncAndWait(200);
 
-	rotateClockwise(10);
+	rotateCounterClockwise(20);
 	syncAndWait(100);
 
-	driveTowardsRight(40);
+	//driveTowardsRight(40);
 	openClawToPushPosition();
 	//raiseArmToLowFencePosition();
 	//moveArmToLowFenchPushPosition();
 	syncAndWait(100);
-	dropArm(20);
+	//dropArm(20);
 
 	driveForward(20);
 	syncAndWait(200);

@@ -35,7 +35,7 @@ task chassisControl() {
 	while(true){
 		subtle_rotation_control();
 		subtle_movement_control();
-		checkAutonomous();
+		//checkAutonomous();
 
 		int rotateDirection = 0;
 		if (vexRT[Btn5D] == 1) {
