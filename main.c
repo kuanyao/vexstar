@@ -138,7 +138,6 @@ task triggerAutonomous() {
     autonomousProgramTwo();
   } else if (jumperSetting == 3) {
     autonomousProgramTesting();
-
   } else if (jumperSetting == 4) {
 
   } else if (jumperSetting == 5) {
